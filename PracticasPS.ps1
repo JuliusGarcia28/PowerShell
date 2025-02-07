@@ -1,3 +1,4 @@
+<#Variables#>
 $var1="Hola"
 $var2="mundo"
 $var3=100
