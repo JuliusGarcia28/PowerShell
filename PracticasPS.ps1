@@ -212,7 +212,7 @@ fuction Get-Fecha
 {Get-Date}
 
 fuction Get-Resta{
-    param ([int]num1, [int]$num2)
+    param ([int]$num1, [int]$num2)
     $resta=$num1-$num2
     Write-Host "La resta de los parametros es $resta"
 }
@@ -232,9 +232,18 @@ fuction Get-Resta{
 
 <#Modulos#>
 
-<#Get-Module
-    Get-Module -ListAvilable
-    Remove-Module BitsTransfer
+<#
+Get-Module
+    
+Get-Module -ListAvilable
+
+Remove-Module BitsTransfer
+
+Get-Command -Module BitsTransfer
+
+Get-Help BitsTransfer
+
+Import-Module BitsTransfer
 #>
 
 <#Scripts#>
@@ -356,41 +365,42 @@ $PS = New-ScheduledTaskAction -Excute "Powershell.exe" -Argument
 Register-ScheduledTask -TaskName "Ejecutar Backupdel Registro del sistema" -Trigger $Time -Action $PS
 
 <#Administracion con PowerShell#>
+#Obtener los Servicios que se pueden visualizar como una lista
 Get-Service
-
+#Detiene un servicio inmediatamente y tambien cualquier tarea en curso que se este realizando
 Stop-Service -Name Spooler -Confirm -PassThru
-
+#Iniciar un servicio y que comience a ejecutarse
 Start-Service -Name Spooler -Confirm -PassThru
-
+#Se utliza para suspender un servicio, pausandolo temporalmente en lugar de detenerlo por completo
 Suspend-Service -Name Spooler -Confirm -PassThru
-
+#Detiene y luego inicia nuevamente un servicio de esta manera reiniciando el servicio deseado
 Restart-Service -Name WSearch -Confirm -PassThru
-
+#Cambia la configuracion de un servicio realizando tareas como cambiar su nombre, descripcion, su tipo de inicio, entre otros
 Set-Service -Name dcsvc -DisplayName "Servicio de virtualizacion de credenciales de seguridad distribuidas"
-
+#Regresa nombre y descripcion de un servicio
 Get-CimInstance Win32_Service -Filter 'Name = "BITS"' | Format-List Name, Description
-
+#Obtiene informacion detallada del usuario sobre los procesos en ejecucion
 Get-Process -Name Acrobat
-
+#Para esperar a que un proceso en ejecucion se detenga, suprime el cmd hasta que se detengan los procesos
 Wait-Process -Name Notepad
 
 <#Administracion de usuarios y grupos#>
+#Si no le añades ningun parametro , muestra una lista de todas las cuentas locales con info sobre cada una
 Get-LocalUser
-
+#Para obtener informacion detallada sobre una cuenta en concreto se usan filtros por parametros
 Get-LocalUser -Name Julius | Select-Object *
-
+#Obtiene informacion detallada sobre los grupos locales de un equipo
 Get-LocalGroup
-
+#De la misma manera que los usuarios se pueden filtrar por parametros
 Get-LocalGroup -Name Administradores | Select-Object *
-
+#Se crea una cuenta de usuario local en el equipo
 New-LocalUser -Name "Usuario1" -Desccripcion "Usuario de prueba 1" -NoPassword
-
-Get-LocalUSer -Name "Usuario1"
-
+#
+#Elimina un usuario local en el equipo
 Remove-LocalUser -Name "Usuario1"
-
+#Crea un nuevo grupo local en el equipo
 New-LocalGroup -Name 'Grupo' -Descripcion 'Grupo de prueba 1'
-
+#Agregar miembros a un grupo local en el equipo
 Add-LocalGroupMember -Group Grupo1 -Member Usuario2 -Verbose
-
+#Eliminar miembros de un grupo local del equipo
 Remove-LocalGroupMember -Group Grupo1 -Member Usuario1
